@@ -1,19 +1,11 @@
 { pkgs, config, lib, ... }:
 {
-  programs.starship = {
-    enable = true;
-    # You can add custom settings here, for example:
-    settings = {
-      add_newline = false;
-      # character = {
-      #   success_symbol = "[➜](bold green)";
-      #   error_symbol = "[➜](bold red)";
-      # };
-      # Add any other custom settings you want
+    programs.starship = {
+      enable = true;
+      settings = {
+        add_newline = false;
+      };
     };
-  };
-
-
 
     programs.zsh = {
       enable = true;
@@ -22,34 +14,17 @@
         enable = true;
       };
       enableCompletion = true;
-
-      plugins = [
-        {
-          name = "antigen";
-          src = builtins.fetchGit {
-            url = "https://github.com/zsh-users/antigen.git";
-            ref = "master";
-          };
-        }
-      ];
+      zplug = {
+        enable = true;
+        plugins = [
+          { name = "zsh-users/zsh-autosuggestions"; }
+          { name = "jeffreytse/zsh-vi-mode"; }
+          { name = "zsh-users/zsh-syntax-highlighting"; }
+          { name = "agkozak/zsh-z"; }
+        ];
+      };
 
       initExtra = ''
-        # Load antigen
-        source ~/.config/zsh/plugins/antigen/antigen.zsh
-
-        # Load plugins
-        antigen use oh-my-zsh
-        antigen bundle git
-        antigen bundle command-not-found
-        antigen bundle zsh-users/zsh-syntax-highlighting
-        antigen bundle zsh-users/zsh-autosuggestions
-        antigen bundle zsh-users/zsh-completions
-        antigen bundle agkozak/zsh-z
-        antigen bundle jeffreytse/zsh-vi-mode
-
-        # Apply antigen configuration
-        antigen apply
-
         # allows arbitrary binaries downloaded through channels such as mason to be run
         export NIX_LD=$(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"; in NIX_LD')
 
@@ -145,9 +120,6 @@
                   tmux new-session
               fi
           }
-
-        # Initialize Starship
-        eval "$(starship init zsh)"
       '';
 
       envExtra = ''
@@ -178,6 +150,8 @@
         sudonvim = "sudo -E nvim";
         nixrebuild = "nixos-rebuild switch";
         homeswitch = "home-manager switch";
+        fr = "nixos-rebuild switch --flake ~/nixos-config";
       };
+
   };
 }

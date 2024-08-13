@@ -217,5 +217,4 @@
       set smartindent
     '';
   };
-
 }

@@ -13,6 +13,13 @@ in
   networking.hostName = vars.hostname;
   networking.networkmanager.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+    wget
+    curl
+  ];
+
   time.timeZone = vars.timezone;
 
   i18n.defaultLocale = "${vars.locale}";

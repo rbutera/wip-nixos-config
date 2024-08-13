@@ -1,8 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, variables, ... }:
 
-let
-  variables = import ./variables.nix;
-in 
 {
   imports = [
     ./modules/git.nix

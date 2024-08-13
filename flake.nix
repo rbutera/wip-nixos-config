@@ -12,12 +12,16 @@
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: 
   let 
-    variables = import ./variables.nix;
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+    variables = import ./variables.nix { inherit pkgs; };
   in
   {
     nixosConfigurations.${variables.hostname} = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+    inherit system;
+    specialArgs = { inherit variables; };
       modules = [
+        ({ config, pkgs, ... }: { _module.args.variables = variables; })
         ./configuration.nix
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;

@@ -1,3 +1,4 @@
+{ pkgs }:
 {
   hostname = "vm";  # Replace with your actual hostname
   username = "rai";

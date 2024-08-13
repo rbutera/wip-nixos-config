@@ -1,13 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, variables, ... }:
 
-let
-  vars = import /etc/nixos/variables.nix;
-in
 {
   programs.git = {
     enable = true;
-    userName = vars.fullName;
-    userEmail = vars.email;
+    userName = variables.fullName;
+    userEmail = variables.email;
     
     aliases = {
       # Existing aliases
@@ -45,7 +42,7 @@ in
     };
 
     extraConfig = {
-      github.user = vars.githubUsername;
+      github.user = variables.githubUsername;
 
       core = {
         editor = "nvim";
